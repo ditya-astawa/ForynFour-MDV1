@@ -1,96 +1,103 @@
-const { default: makeWASocket, BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, downloadContentFromMessage, downloadHistory, proto, getMessage, generateWAMessageContent, prepareWAMessageMedia } = require('@adiwajshing/baileys')
-const { servers, yta, ytv } = require('../lib/y2mate')
-let fs = require('fs')
-let yts = require('yt-search')
-let fetch = require('node-fetch')
+// ---------------------------old------------------------------------------------
+
+/*import { youtubeSearch } from '@bochilteam/scraper'
 let handler = async (m, { conn, command, text, usedPrefix }) => {
-  if (!text) throw `uhm.. cari apa?\n\ncontoh:\n${usedPrefix + command} california`
-  let chat = global.db.data.chats[m.chat]
-  let results = await yts(text)
-  let vid = results.all.find(video => video.seconds < 3600)
-  if (!vid) throw 'Konten Tidak ditemukan'
-  let isVideo = /2$/.test(command)
-  let yt = false
-  let yt2 = false
-  let usedServer = servers[0]
-  for (let i in servers) {
-    let server = servers[i]
-    try {
-      yt = await yta(vid.url, server)
-      yt2 = await ytv(vid.url, server)
-      usedServer = server
-      break
-    } catch (e) {
-      m.reply(`Server ${server} error!${servers.length >= i + 1 ? '' : '\nmencoba server lain...'}`)
-    }
-  }
-  if (yt === false) throw 'semua server gagal'
-  if (yt2 === false) throw 'semua server gagal'
-  let { dl_link, thumb, title, filesize, filesizeF } = yt
-let anu =  `╭───〔 YOUTUBE DOWNLOAD 〕──⬣
-⫹⫺ *Judul:* ${title}
-⫹⫺ *Ukuran File Audio:* ${filesizeF}
-⫹⫺ *Ukuran File Video:* ${yt2.filesizeF}
-⫹⫺ *Server y2mate:* ${usedServer}
-⫹⫺ *Link Sumber:* ${vid.url}
-╰──────────⬣`
-     let message = await prepareWAMessageMedia({ image: await (await require('node-fetch')(thumb)).buffer()}, { upload: conn.waUploadToServer }) 
-      const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
-      templateMessage: {
-          hydratedTemplate: {
-            imageMessage: message.imageMessage, 
-            hydratedContentText: anu,
-            hydratedFooterText: wm, 
-            hydratedButtons: [{
-             urlButton: {
-               displayText: 'MyWeb',
-               url: 'https://lynk.id/kri.com'
-             }
+  if (!text) throw `Use example ${usedPrefix}${command} Minecraft`
+  let vid = (await youtubeSearch(text)).video[0]
+  if (!vid) throw 'Video/Audio Tidak ditemukan'
+  let { title, description, thumbnail, videoId, durationH, viewH, publishedTime } = vid
+  const url = 'https://www.youtube.com/watch?v=' + videoId
+  await conn.sendHydrated(m.chat, `
+*${htki} PLAY ${htka}*
 
-           },
-              {
-             urlButton: {
-               displayText: 'Saweria',
-               url: 'https://saweria.co/Kricom'
-             }
+${htjava} *Title:* ${title}
+ *Published:* ${publishedTime}
+ *Duration:* ${durationH}
+ *Views:* ${viewH}
 
-           },
-               {
-             quickReplyButton: {
-               displayText: '🎵 Audio',
-               id: `.ytmp3 ${vid.url}`,
-             }
-
-            },
-               {
-             quickReplyButton: {
-               displayText: '📽 Video',
-               id: `.ytmp4 ${vid.url}`,
-             }
-
-            },
-               {
-             quickReplyButton: {
-               displayText: '🔎 Search',
-               id: `.yts ${vid.url}`,
-             }
-
-           }]
-         }
-       }
-     }), { userJid: m.sender, quoted: m });
-    //conn.reply(m.chat, text.trim(), m)
-    return await conn.relayMessage(
-         m.chat,
-         template.message,
-         { messageId: template.key.id }
-     )
+ *Url:* ${url}
+ *Description:* ${description}
+  `.trim(), wm, thumbnail, url, ' GO TO YOUTUBE', null, null, [
+    [' Audio', `${usedPrefix}yta ${url} yes`],
+    [' Video', `${usedPrefix}ytv ${url} yes`],
+    [' Youtube Search', `${usedPrefix}yts ${url}`]
+  ], m)
 }
-handler.help = ['play'].map(v => v + ' <pencarian>')
-handler.tags = ['downloader']
-handler.command = /^(p|play)$/i
+handler.help = ['play', 'play2'].map(v => v + ' <pencarian>')
+handler.tags = ['downloader', 'limitmenu']
+handler.command = /^play2?$/i
 
 handler.exp = 0
+handler.limit = true
+handler.register = true
 
-module.exports = handler
+export default handler */
+// ---------------------------new------------------------------------------------
+
+import fetch from 'node-fetch'
+import { youtubeSearch } from '@bochilteam/scraper'
+let handler = async (m, { conn, groupMetadata, usedPrefix, text, args, command }) => {
+let fdoc = {quoted:{key : {participant : '0@s.whatsapp.net'},message: {documentMessage: {title: `${command}`}}}}
+//try {
+  if (!text) throw `Use example ${usedPrefix}${command} gustixa`
+  let vid = (await youtubeSearch(text)).video[0]
+  if (!vid) throw 'Video/Audio Tidak ditemukan'
+  let { title, description, thumbnail, videoId, durationH, viewH, publishedTime } = vid
+  const url = 'https://www.youtube.com/watch?v=' + videoId
+  let whmodsdev = `*${htki} PLAY ${htka}*
+
+   *Title:* ${title}
+ *Url:* ${url}
+ *Description:* ${description}
+
+ *Published:* ${publishedTime}
+ *Duration:* ${durationH}
+ *Views:* ${viewH}
+  `
+  await conn.sendButton(m.chat, whmodsdev, wm, thumbnail, [
+    [' Audio', `${usedPrefix}yta ${url} yes`],
+    [' Video', `${usedPrefix}ytv ${url} yes`],
+    [' Youtube Search', `${usedPrefix}yts ${text}`]
+], m, fdoc)
+//} 
+/* catch {
+if (!text) throw 'Input Query'
+  let vid = (await youtubeSearch(text)).video[0]
+  if (!vid) throw 'Video/Audio Tidak Ditemukan'
+  let { title, description, thumbnail, videoId, durationH, durationS, viewH, publishedTime } = vid
+  let url = 'https://www.youtube.com/watch?v=' + videoId
+  let ytLink = `https://yt-downloader.akkun3704.repl.co/?url=${url}&filter=audioonly&quality=highestaudio&contenttype=audio/mpeg`
+  let capt = `*${htki} PLAY ${htka}*
+
+   *Title:* ${title}
+ *Url:* ${url}
+ *Description:* ${description}
+
+ *Published:* ${publishedTime}
+ *Duration:* ${durationH}
+ *Views:* ${viewH}
+  `
+  let buttons = [{ buttonText: { displayText: ' Audio/Vn' }, buttonId: `${usedPrefix}yta ${url}` }, { buttonText: { displayText: ' Video' }, buttonId: `${usedPrefix}ytv ${url}` }, { buttonText: { displayText: ' Youtube Search' }, buttonId: `${usedPrefix}yts ${text}` }]
+  let msg = await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: capt, footer: '_Audio on progress..._', buttons }, { quoted: m })
+  // if (durationS > 4000) return conn.sendMessage(m.chat, { text: `*Download:* ${await shortUrl(ytLink)}\n\n_Duration too long..._` }, { quoted: msg })
+  conn.sendMessage(m.chat, { audio: { url: ytLink }, mimetype: 'audio/mpeg' }, { quoted: msg })
+} */
+
+}
+handler.help = ['play', 'play2'].map(v => v + ' <pencarian>')
+handler.tags = ['downloader', 'limitmenu']
+handler.command = /^play2?$/i
+
+handler.exp = 0
+handler.limit = true
+handler.register = true
+
+export default handler
+
+async function shortUrl(url) {
+  url = encodeURIComponent(url)
+  let res = await fetch(`https://is.gd/create.php?format=simple&url=${url}`)
+  if (!res.ok) throw false
+  return await res.text()
+}
 
