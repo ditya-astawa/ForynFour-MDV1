@@ -28,20 +28,20 @@ VERSION:3.0
 N:;;;
 FN: ᯤ ᴋʀɪᴢʏɴ ᴏꜰᴄ
 item.ORG: ᴅᴇᴠᴇʟᴏᴩᴇʀ ʙᴏᴛ
-item1.TEL;waid=62895327934887:62895327934887@s.whatsapp.net
+item1.TEL;waid=6285237596750:6285237596750@s.whatsapp.net
 item1.X-ABLabel: Nomor Owner Bot
-item2.EMAIL;type=INTERNET: mhdfakri14@gmail.com
+item2.EMAIL;type=INTERNET: dityaastawa2@gmail.com
 item2.X-ABLabel:📫 Gmail
-item3.ADR:;;📍 Acehnese - Indonesian;;;;
+item3.ADR:;;📍 Balinese - Indonesian;;;;
 item3.X-ABADR:ac
 item3.X-ABLabel:📮 Location Owner
-item4.URL:http://youtube.com/c/hokenbeusz
+item4.URL:-
 item4.X-ABLabel:Youtube
-item5.URL:https//github.com/krizynofc
+item5.URL:https//github.com/Dityarunz
 item5.X-ABLabel:Github
-item6.URL:https//instagram.com/mhdfakri_
+item6.URL:https//instagram.com/q.c.ditya
 item6.X-ABLabel:Instagram
-item7.URL:https://lynk.id/kri.com
+item7.URL:https://dityaastawa.github.io/
 item7.X-ABLabel:Website
 END:VCARD`
 const sentMsg  = await conn.sendMessage(
